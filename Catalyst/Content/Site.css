@@ -1,0 +1,71 @@
+﻿body {
+	padding-top: 50px;
+	padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+	white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+	max-width: 280px;
+}
+
+
+.group-contact {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+
+.group-contact-contacts {
+	max-height: 40em;
+	min-height: 10em;
+	overflow-y: scroll;
+}
+
+.group-contact-search {
+	padding: 0 0 1em 1em
+}
+
+.contact {
+	margin: 1em 0;
+}
+
+.contact-load {
+	padding: 4em;
+}
+
+.contact-title {
+	color: #48729c;
+	margin-top: 0;
+}
+.contact > div {
+	box-sizing: border-box !important; /* kendo/bootstrap fix */
+	/*
+	clear: both;
+	margin: 1em;*/
+}
+
+.contact img {
+/*	float: left; */
+	margin: 0 1em;
+	border-radius: 25%; /* or use bootstrap "rounded" or "rounded-circle" */
+	box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.4);
+}
+
+.k-loading, .k-loading-image {
+	background-size: 25% 2em;
+}

@@ -1,0 +1,92 @@
+﻿@{
+	ViewBag.Title = "Home Page";
+}
+
+@* todo: make separate template js file *@
+<script type="text/x-kendo-template" id="contact-template">
+	<section class="contact col-lg-5 col-sm-12">
+        <div class="row">
+            <div class="col-lg-3">
+                <img class="contact-photo img-responsive" src="#: picture.path #" alt="#:firstName# #:lastName#" />
+            </div>
+            <div class="col-lg-5">
+                <h3 class="contact-title">#:firstName# #:lastName#</h3>
+                <p class="contact-address">#:address#</p>
+                <p class="contact-age">Age: #: age #</p>
+                <p class="contact-interest">Likes: #:interest#</p>
+            </div>
+        </div>
+	</section>
+</script>
+
+<!--
+<div class="jumbotron">
+	<h1>Contact List</h1>
+	<p class="lead">Find your star employees here!</p>
+</div>
+-->
+
+<div class="row clearfix">
+	<div class="well group-contact">
+		<div class="group-contact-search">
+			<input id="c-search-in" name="c-search-in" class="k-textbox" type="search" maxlength="40" placeholder="search..." />
+			<input id="c-search-go" type="button" class="k-button" value="Go" />@* todo: icon instead of text *@
+		</div>
+		<div id="c-contacts" class="group-contact-contacts">
+            <div class="contact-load">Loading...</div>
+        </div>
+
+		@* todo: move to own javascript file so CSP can be enabled *@
+		<script>
+			$(function () {
+				var dataSource = new kendo.data.DataSource({
+					transport: {
+						read: {
+							url: "/api/search",
+							type: "get",
+							dataType: "json",
+							data: {
+								q: function () { return $("#c-search-in").val(); }
+							}
+						}
+					},
+					schema: {
+						//add pre-calculated field for age
+						parse: function (response) {
+							var n = response.length,
+								now = new Date(),
+								dob,
+								value;
+
+							for (var i = 0; i < n; i++) {
+							    value = response[i];
+							    if (value.birthDate && (dob = new Date(value.birthDate))) {
+							        value.age = now.getFullYear() - dob.getFullYear();
+							        if (now.getMonth() < dob.getMonth() || now.getMonth() == dob.getMonth() && now.getDate() < dob.getDate())
+							            value.age--;
+                                }
+							}
+
+							return response;
+						}
+					}
+				});
+
+				$("#c-contacts").kendoListView({
+				    dataSource: dataSource,
+				    dataBound: function (e) {
+				        if (this.dataSource.data().length == 0) {
+				            $("#c-contacts").append('<div class="contact-load">No results</div>');
+				        }
+				    },
+					template: kendo.template($("#contact-template").html())
+				});
+
+				@* todo: could trigger input box on change timer instead of button *@
+				$('#c-search-go').click(function () {
+					dataSource.read();
+				});
+			});
+		</script>
+	</div>
+</div>
