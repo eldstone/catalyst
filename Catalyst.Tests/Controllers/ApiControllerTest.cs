@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Catalyst.Controllers;
 using System.Web.Script.Serialization;
+using Catalyst.Models.View;
 
 namespace Catalyst.Tests.Controllers
 {
@@ -29,7 +30,8 @@ namespace Catalyst.Tests.Controllers
         {
 			var x = new ApiController();
 
-			var result = x.Index() as JsonResult;
+			var post = new ViewSearch { q = "ho" };
+			var result = x.Search(post) as JsonResult;
 			string json = (result == null) ? "" : new JavaScriptSerializer().Serialize(result.Data);
 
 			Assert.IsTrue(json.Length > 0);

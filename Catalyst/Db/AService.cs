@@ -154,12 +154,12 @@ namespace Catalyst.Db
 		FindAll(
 			Expression<Func<TModel, bool>> where)
 		{
-			return this.db.Set<TModel>().Where(where).ToList();
+			return this.FindAllQuery(where).ToList();
 		}
 
 
 		/// <summary>
-		/// Return all models that matches the expression
+		/// Return a linq tree for models that match the expression
 		/// </summary>
 		/// <param name="where">Linq where expression</param>
 		/// <returns>Queryable linq expression</returns>

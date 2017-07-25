@@ -40,16 +40,22 @@
 		<script>
 			$(function () {
 				var dataSource = new kendo.data.DataSource({
-					transport: {
-						read: {
-							url: "/api/search",
-							type: "get",
-							dataType: "json",
-							data: {
-								q: function () { return $("#c-search-in").val(); }
-							}
-						}
-					},
+				    transport: {
+				        read: {
+				            url: "/api/search",
+				            type: "post",
+				            contentType: 'application/json; charset=utf-8',
+				            dataType: "json",
+				            //todo: error handler
+				        },
+				        parameterMap: function (data, type) {
+				            return JSON.stringify({
+                                q: $("#c-search-in").val(),
+                                min: 0, //todo: paging
+                                max: 0
+				            });
+				        }
+				    },
 					schema: {
 						//add pre-calculated field for age
 						parse: function (response) {

@@ -1,4 +1,5 @@
 ﻿using Catalyst.Db;
+using Catalyst.Models.View;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -47,34 +48,29 @@ namespace Catalyst.Controllers
         }
 
 
-		// GET: Api/Search?key=val
+		// Post: Api/Search [ViewSearch]
 		//todo: use custom Result so data format can be configured, e.g. JSON/XML
+		[HttpPost]
 		public JsonResult
-		Search()
+		Search(
+			ViewSearch search)
         {
 			//disable circular references
 			this.db.Configuration.LazyLoadingEnabled = false;
 			this.db.Configuration.ProxyCreationEnabled = false;
 
 			var repo = new ServicePerson(this.db);
-			var q = Request.QueryString["q"].Trim(); //todo, taint check
+
+			//todo: nonce xss check
+			//todo: sanitize search.q
+			if (search.q == null)
+				search.q = "";
 
 			//todo: add paging
-			//var min = 0;
-			//var max = 20;
-			//int.TryParse(Request.QueryString["min"], out min);
-			//int.TryParse(Request.QueryString["max"], out max);
-
 			//search
-			/*
-			var data = repo.FindAll(
-				p => p.lastName.ToUpper().Contains(q)
-					|| p.firstName.ToUpper().Contains(q))
-				.OrderBy(p => p.lastName);
-			*/
 			var data = repo.FindAllQuery(
-				p => p.lastName.ToUpper().Contains(q)
-					|| p.firstName.ToUpper().Contains(q))
+				p => p.lastName.ToUpper().Contains(search.q)
+					|| p.firstName.ToUpper().Contains(search.q))
 				.OrderBy(p => p.lastName)
 			.Include(p => p.picture) //include pictures
 			.ToList();
