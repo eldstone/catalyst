@@ -104,19 +104,27 @@ namespace Catalyst.Tests.Db
 
 			var c = y.Where(p => p.lastName == "Horton");
 			Assert.IsNotNull(c);
+	}
 
-/*
-			var y = this.repo.FindAll(p => p.lastName.ToUpper().Contains("AL"));
+
+		[TestMethod]
+		public void
+		ServicePerson_FindAllQueryByNamey()
+		{
+			var y = this.repo.FindAllQueryByName("HO").ToList();
+
 			Assert.IsNotNull(y);
-			Assert.AreEqual(2, y.Count);
+			Assert.AreEqual(3, y.Count);
 
-			var a = y.Where(p => p.lastName == "Alexander");
+			var a = y.Where(p => p.lastName == "Graham");
 			Assert.IsNotNull(a);
 
-			var b = y.Where(p => p.lastName == "Alonso");
+			var b = y.Where(p => p.lastName == "Thomsen");
 			Assert.IsNotNull(b);
-*/
-	}
+
+			var c = y.Where(p => p.lastName == "Horton");
+			Assert.IsNotNull(c);
+		}
 
 
 		// ..create, read, find, etc...

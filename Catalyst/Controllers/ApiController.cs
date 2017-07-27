@@ -68,12 +68,9 @@ namespace Catalyst.Controllers
 
 			//todo: add paging
 			//search
-			var data = repo.FindAllQuery(
-				p => p.lastName.ToUpper().Contains(search.q)
-					|| p.firstName.ToUpper().Contains(search.q))
-				.OrderBy(p => p.lastName)
-			.Include(p => p.picture) //include pictures
-			.ToList();
+			var data = repo.FindAllQueryByName(search.q)
+				.Include(p => p.picture) //include pictures
+				.ToList();
 
 			//manual circular reference fix; todo: view models could fix this and protect re-serialization of EF models
 			foreach (var p in data)
